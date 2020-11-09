@@ -5,6 +5,8 @@ function Osc (client) {
 
   this.stack = []
   this.socket = null
+  this.server = null
+  this.inPort = 49163
   this.port = null
   this.options = { default: 49162, tidalCycles: 6010, sonicPi: 4559, superCollider: 57120, norns: 10111 }
 
@@ -53,5 +55,31 @@ function Osc (client) {
     if (this.socket) { this.socket.close() }
     this.socket = new osc.Client(client.io.ip, this.port)
     console.info('OSC', `Started socket at ${client.io.ip}:${this.port}`)
+
+    this.server = new osc.Server(this.inPort, client.io.ip)
+    console.info('OSC', `Started server at ${client.io.ip}:${this.inPort}`)
+
+    this.server.on('message',(message) => {
+      // console.log('Incoming OSC message: ', message)
+      const address = message[0]
+      switch (address) {
+        case '/input':
+          const input = parseInt(message[1])
+          const value = parseInt(message[2])
+          if (input.isNan || value.isNaN) {
+            console.info('OSC','Ignoring invalid message')
+          }
+          const key = client.orca.keyOf(input)
+          client.orca.oscIn[key] = clamp(value,0,255)
+          break;
+        default:
+          console.info('OSC','Ignoring unknown message')
+          break
+      }
+    })
+  }
+
+  function clamp(v, min, max) {
+    return v < min ? min : v > max ? max : v
   }
 }

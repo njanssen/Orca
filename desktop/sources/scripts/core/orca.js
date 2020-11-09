@@ -11,6 +11,7 @@ function Orca (library) {
   this.locks = []
   this.runtime = []
   this.variables = {}
+  this.oscIn = {}
 
   this.run = function () {
     this.runtime = this.parse()
@@ -187,6 +188,14 @@ function Orca (library) {
 
   this.valueIn = function (key) {
     return this.variables[key] || '.'
+  }
+
+  this.valueOsc = function (key) {
+    const value = this.oscIn[key]
+    if (typeof value === 'undefined') {
+      return '.'
+    }
+    return value
   }
 
   // Tools

@@ -714,6 +714,33 @@ library[';'] = function OperatorUdp (orca, x, y, passive) {
   }
 }
 
+library['~'] = function OperatorOscIn (orca, x, y, passive) {
+  Operator.call(this, orca, x, y, '~', passive)
+
+  this.name = 'oscIn'
+  this.info = 'Outputs OSC input'
+
+  this.ports.key = { x: -1, y: 0 }
+  this.ports.min = { x: 1, y: 0, default: '0' }
+  this.ports.max = { x: 2, y: 0, default: 'z' }
+  this.ports.output = { x: 0, y: 1, sensitive: true, output : true }
+
+  const scale = (val, in_min, in_max, out_min, out_max) => {
+    return Math.round(
+      ((val - in_min) * (out_max - out_min)) / (in_max - in_min) + out_min
+    )
+  }
+
+  this.operation = function (force = false) {
+    const key = this.listen(this.ports.key)
+    if (key === '.') { return }
+
+    const value = orca.valueOsc(key)
+    const min = this.listen(this.ports.min, true)
+    const max = this.listen(this.ports.max, true)
+    return orca.keyOf(scale(value,0,254,min,max))
+  }
+}
 // Add numbers
 
 for (let i = 0; i <= 9; i++) {
