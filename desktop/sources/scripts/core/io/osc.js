@@ -53,6 +53,10 @@ function Osc (client) {
   this.setup = function () {
     if (!this.port) { return }
     if (this.socket) { this.socket.close() }
+    if (this.server) {
+      this.server.close()
+      this.server.removeListeners()
+    }
     this.socket = new osc.Client(client.io.ip, this.port)
     console.info('OSC', `Started socket at ${client.io.ip}:${this.port}`)
 
@@ -70,7 +74,7 @@ function Osc (client) {
             console.info('OSC','Ignoring invalid message')
           }
           const key = client.orca.keyOf(input)
-          client.orca.oscIn[key] = clamp(value,0,255)
+          client.orca.oscIn[key] = clamp(value,0,254)
           break;
         default:
           console.info('OSC','Ignoring unknown message')
