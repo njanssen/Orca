@@ -94,7 +94,7 @@ function Acels (client) {
   // Electron specifics
 
   this.inject = (name = 'Untitled') => {
-    const app = require('electron').remote.app
+    const app = require("@electron/remote").app;
     const injection = []
 
     injection.push({
