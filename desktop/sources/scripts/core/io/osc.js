@@ -70,8 +70,9 @@ function Osc (client) {
         case '/input':
           const input = parseInt(message[1])
           const value = parseInt(message[2])
-          if (input.isNan || value.isNaN) {
+          if (isNaN(input) || isNaN(value)) {
             console.info('OSC','Ignoring invalid message')
+            break;
           }
           const key = client.orca.keyOf(input)
           client.orca.oscIn[key] = clamp(value,0,254)
