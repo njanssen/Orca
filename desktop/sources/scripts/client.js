@@ -403,7 +403,8 @@ function Client () {
 
     this.context.textBaseline = 'bottom'
     this.context.textAlign = 'center'
-    this.context.font = `${this.tile.hs * 0.75}px input_mono_medium`
+    this.context.font = `${this.tile.hs * 0.75}px fira_code`;
+
     this.update()
   }
 

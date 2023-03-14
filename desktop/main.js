@@ -3,9 +3,10 @@
 /* global createWindow */
 
 const { app, BrowserWindow, Menu } = require('electron')
+const remote = require("@electron/remote/main");
 const path = require('path')
-
 let isShown = true
+remote.initialize()
 
 app.win = null
 
@@ -21,8 +22,10 @@ app.on('ready', () => {
     frame: process.platform !== 'darwin',
     skipTaskbar: process.platform === 'darwin',
     autoHideMenuBar: process.platform === 'darwin',
-    webPreferences: { zoomFactor: 1.0, nodeIntegration: true, backgroundThrottling: false }
+    webPreferences: { zoomFactor: 1.0, nodeIntegration: true, backgroundThrottling: false, contextIsolation: false }
   })
+
+  remote.enable(app.win.webContents)
 
   app.win.loadURL(`file://${__dirname}/sources/index.html`)
   // app.inspect()

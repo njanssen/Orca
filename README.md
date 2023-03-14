@@ -4,13 +4,15 @@
 
 Orca is an [esoteric programming language](https://en.wikipedia.org/wiki/Esoteric_programming_language) designed to quickly create procedural sequencers, in which every letter of the alphabet is an operation, where lowercase letters operate on bang, uppercase letters operate each frame.
 
-This application **is not a synthesizer, but a flexible livecoding environment** capable of sending MIDI, OSC & UDP to your audio/visual interfaces, like Ableton, Renoise, VCV Rack or SuperCollider.
+This application **is not a synthesizer, but a livecoding environment** capable of sending MIDI, OSC & UDP to your audio/visual interfaces, like Ableton, Renoise, VCV Rack or SuperCollider.
 
-If you need <strong>help</strong>, visit the <a href="https://talk.lurk.org/channel/orca" target="_blank" rel="noreferrer" class="external ">chatroom</a> or the <a href="https://llllllll.co/t/orca-live-coding-tool/17689" target="_blank" rel="noreferrer" class="external ">forum</a>.
+If you need **help**, visit the [chatroom](https://talk.lurk.org/channel/orca), join the [forum](https://llllllll.co/t/orca-live-coding-tool/17689) or watch an [tutorial](https://www.youtube.com/watch?v=ktcWOLeWP-g).
 
 - [Download builds](https://hundredrabbits.itch.io/orca), available for **Linux, Windows and OSX**.
-- Use directly [in your browser](https://hundredrabbits.github.io/Orca/), requires **webMidi**.
-- Use on a [raspberry pi](https://github.com/hundredrabbits/orca-c#raspberry-pi), a lightweight **C99 version**.
+- Use [in your browser](https://hundredrabbits.github.io/Orca/), requires **webMidi**.
+- Use [in a terminal](https://git.sr.ht/~rabbits/orca), written in C.
+- Use [on small computers](https://git.sr.ht/~rabbits/orca-toy), written in assembly.
+- Use [on the Monome Norns](https://llllllll.co/t/orca/22492), written in Lua.
 
 ## Install & Run
 
@@ -78,7 +80,7 @@ For example, `:25C`, is a **C note, on the 5th octave, through the 3rd MIDI chan
 
 The [MONO](https://en.wikipedia.org/wiki/Monophony) operator `%` takes up to 5 inputs('channel, 'octave, 'note, velocity, length).
 
-This operator is very similar to the default Midi operator, but **each new note will stop the previously playing note**, would its length overlap with the new one. Making certain that only a single note is ever played at once, this is ideal for monophonic analog synthetisers that might struggle to dealing with chords and note overlaps.
+This operator is very similar to the default Midi operator, but **each new note will stop the previously playing note**, would its length overlap with the new one. Making certain that only a single note is ever played at once, this is ideal for monophonic analog synthesisers that might struggle to dealing with chords and note overlaps.
 
 ## MIDI CC
 
@@ -96,7 +98,7 @@ It sends two different values **between 0-127**, where the value is calculated a
 
 This is a command (see below) rather than an operator and it combines the [MIDI program change and bank select functions](https://www.sweetwater.com/sweetcare/articles/6-what-msb-lsb-refer-for-changing-banks-andprograms/).
 
-The syntax is `pg:channel;msb;lsb;program`. Channel is 0-15, msb/lsb/program are 0-127, but program will automatically be translated to 1-128 by the MIDI driver. `program` typically correspondes to a "patch" selection on a synth. Note that `msb` may also be identified as "bank" and `lsb` as "sub" in some applications (like Ableton Live).
+The syntax is `pg:channel;msb;lsb;program`. Channel is 0-15, msb/lsb/program are 0-127, but program will automatically be translated to 1-128 by the MIDI driver. `program` typically corresponds to a "patch" selection on a synth. Note that `msb` may also be identified as "bank" and `lsb` as "sub" in some applications (like Ableton Live). 
 
 `msb` and `lsb` can be left blank if you only want to send a simple program change. For example, `pg:0;;;63` will set the synth to patch number 64 (without changing the bank)
 
